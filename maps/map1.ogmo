@@ -1,0 +1,88 @@
+{
+  "name": "Project Name",
+  "ogmoVersion": "3.4.0",
+  "levelPaths": ["."],
+  "backgroundColor": "#282c34ff",
+  "gridColor": "#3c4049cc",
+  "anglesRadians": true,
+  "directoryDepth": 8,
+  "layerGridDefaultSize": {"x": 16, "y": 16},
+  "levelDefaultSize": {"x": 320, "y": 240},
+  "levelMinSize": {"x": 1024, "y": 512},
+  "levelMaxSize": {"x": 1024, "y": 512},
+  "levelValues": [],
+  "defaultExportMode": ".json",
+  "compactExport": false,
+  "externalScript": "",
+  "playCommand": "",
+  "entityTags": [],
+  "layers": [
+    {
+      "definition": "entity",
+      "name": "entities",
+      "gridSize": {"x": 8, "y": 8},
+      "exportID": "58835277",
+      "requiredTags": [],
+      "excludedTags": []
+    },
+    {
+      "definition": "tile",
+      "name": "walls",
+      "gridSize": {"x": 16, "y": 16},
+      "exportID": "58835749",
+      "exportMode": 0,
+      "arrayMode": 0,
+      "defaultTileset": "New Tileset"
+    },
+    {
+      "definition": "tile",
+      "name": "floor",
+      "gridSize": {"x": 16, "y": 16},
+      "exportID": "58833313",
+      "exportMode": 0,
+      "arrayMode": 0,
+      "defaultTileset": "New Tileset"
+    }
+  ],
+  "entities": [
+    {
+      "exportID": "58848404",
+      "name": "player",
+      "limit": -1,
+      "size": {"x": 16, "y": 16},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#040e7aff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 16, "y": 16},
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": false,
+      "tags": [],
+      "values": []
+    }
+  ],
+  "tilesets": [
+    {"label": "New Tileset", "path": "../../images/tileset1.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAEdUlEQVR4XuVay20bUQyUgNydVOACfEknuSgl+JAu0odLsIvJJQWkhNwDKHgCKHC5w+Fwd+1Ea1+sz+N75HA45JN0fLg7nQ/h7+fvl8PD3Sm+PHuerdvCfhxW+TDOeb5/vPh1+vyh9NcvePnx5/L0uBSAcThyMnsdgcyCVEBkAFiAGTApABZAlQHkYPZalposwx0QEQNGcBUjJAAyEJTgURBKYH6NwrLvHz9NSgAFn712KYHD4XCOmfABxseWTbPxjPGZRtmtGDJsqjXxfAaAZRlpxIQBKIgswE5gfm0n+x1tiQAMWxa4AViWQARAUeQYMHue6UJMhrEiK0cGANMBCkA3cxaM0TfSWFH0sQeq/0j5CBwqAaM86wQyAOZYxQAfAMpuZc9KhAFYiWDWEWYAsPan1G9kgQehaq3K/tkaVALKRJSKYNWbmdJnmfKlgSjdLRGvBx0APBtmACDVZ4qf9flKP5jIqcOX3yMbhWP9x1K4AjDmALXtsOEmMoP1cwYSYwN6r2KABU4B2JL2yvQW9QENYmjgQn4yAHzwtp+1xgkDmEJX9anWPQM5KzVjZqcL+EFHmgPQKOwVXa1LpLyqulcMZAmqSiDrCFcGPN8/XjSguj3Fjfy4uYW90rrYmqX+HzMA1Pt0rC1PQQZMBPC/AkC5TzOHFfsK4LWAqPYzBqj3aVZbkY7sPt6lrhqYuo4CoFwrkTbEVoNKocuAOMV1gcvsoQYsCdwDodh3ARj7K/tWpRk1iwLQRVkVQB+MP0MFpbrhVX57e1gCRlnVIZT94QSzz95DF5YIUjXgxBJk9qUIKooeAVAc9gBkQaP53YDNzsj2NdZF+3QOUFV06brK0Uw4fXbR46y8PAD+cQuALhuUDpEFlA1YSvvtiKU8CXaDjzWO6ByzjGzYNIkA9usVDSsZYI53AfAdIavbTnBLS62yowD44LuUjKIT7ZXsVM5v8T4tgardeAeU8Re1yy2CWLNHWQJMdBgAlVNeqKq1r/n+FYDXPETZu5reMsFT9mZrbgIApBdbMeh4/vJt9guRDqprxUy1X9qFqhK+CQDUwUYF0zrU+C8DEOd1duHYmkGd7MfWXf5EplMCKBPVjQ+1Rz8TdLKmAKvuZ+smDOgYVwxQgWECt7QzoJtiNorPSiBSPY6rnZk+mxN80BlQFe07yUIj94QBWdAo2DjXrw0AjdioxXU/Oco0y85LAfAKycZbJjZqdqqzUObMJtMWhf6wCyAWZA6gmb5brzETyB6VQUeII5MQi6gIKplU11TtaCmAPpssYbIIKq2mywCUNYUBqi9s/6zMYBtUD+wCkNUt04COL16PFG2YaMBbfDvMen0nULa2W0JXBrwFAMhx1OrWgPHPAPj662n83vhm/1Z/InTzAIzL0BoR2Q0AaCRlrcpq+F0AgNrYLgFgd/c4Ze0KADYtoW91/PpdlEDWp7NvX98FANWsvrsS6JbBLgHoXE52DYAJX3W/Hu/vSgSVDzeiNuwKgM6NZjclYNfhTvB+7c0z4L0D8BdYjlmMfhgfEgAAAABJRU5ErkJgggAA", "tileWidth": 16, "tileHeight": 16, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0}
+  ]
+}

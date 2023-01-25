@@ -1,7 +1,6 @@
 package player
 
 import "github.com/hajimehoshi/ebiten/v2"
-// import "github.com/hajimehoshi/ebiten/v2/ebitenutil"
 import "image"
 import "bytes"
 import "DownToTheCenter/mapRenderer"
@@ -11,7 +10,7 @@ var spr []*ebiten.Image
 var currentSprite uint8 = 0
 var x, y float64
 var flip bool
-var itens[2] items.Item
+var itens [2]items.Item
 func max(y int16, x int16) int16 {
     if x > y {
 		return x
@@ -33,7 +32,8 @@ func loadSprite(tileset *ebiten.Image, clip image.Rectangle){
 
 func init() {
 	items.LoadItems()
-	itens[0] = items.Item{items.Sword, 100, 100, false, false, "inital", 0}
+	itens[0] = items.Item{items.Sword, 98, 103, false, false, []byte{}, 0, ebiten.MouseButtonLeft}
+	itens[1] = items.Item{items.Bow, 106, 103, false, false, []byte{}, 0, ebiten.MouseButtonLeft}
 	flip = false
 	x, y = 100, 100
 	img, _, _ := image.Decode(bytes.NewReader(fs.LoadFile("images/player.png")))
@@ -45,22 +45,30 @@ func init() {
 }
 
 func Draw(screen *ebiten.Image){
-    itemop := &ebiten.DrawImageOptions{}
-	itemop.GeoM.Translate(float64(x) - float64(mapRenderer.CamX), float64(y) - float64(mapRenderer.CamY))
-	screen.DrawImage(itens[0].Classification.Spr[itens[0].CurrentSprite], itemop)
 	op := &ebiten.DrawImageOptions{}
-    if !flip {
+	item1op := &ebiten.DrawImageOptions{}
+	item2op := &ebiten.DrawImageOptions{}
+	if !flip {
 	    op.GeoM.Scale(float64(1), float64(1))
         op.GeoM.Translate(float64(x) - float64(mapRenderer.CamX), float64(y) - float64(mapRenderer.CamY))
+		item1op.GeoM.Translate(float64(itens[0].X) - float64(mapRenderer.CamX), float64(itens[0].Y) - float64(mapRenderer.CamY))
+		item2op.GeoM.Translate(float64(itens[1].X) - float64(mapRenderer.CamX), float64(itens[1].Y) - float64(mapRenderer.CamY))
 	} else {
 	    op.GeoM.Scale(-1, 1)
+	    item1op.GeoM.Scale(-1, 1)
+	    item2op.GeoM.Scale(-1, 1)
         op.GeoM.Translate(float64(x) + float64(16.0) - float64(mapRenderer.CamX), float64(y) - float64(mapRenderer.CamY))
+		item1op.GeoM.Translate(float64(itens[0].X) - float64(mapRenderer.CamX) + float64(20), float64(itens[0].Y) - float64(mapRenderer.CamY))
+		item2op.GeoM.Translate(float64(itens[1].X) - float64(mapRenderer.CamX) + float64(5), float64(itens[1].Y) - float64(mapRenderer.CamY))
 	}
 	screen.DrawImage(spr[currentSprite], op)
+	screen.DrawImage(itens[0].Classification.Spr[itens[0].CurrentSprite], item1op)
+	screen.DrawImage(itens[1].Classification.Spr[itens[1].CurrentSprite], item2op)
 }
 
 func Update(){
-    itens[0].Classification.Update(itens[0])
+    itens[0].Classification.Update(&itens[0], flip)
+    itens[1].Classification.Update(&itens[1], flip)
 	var colx float64
 	if flip {
 		colx = x
@@ -69,33 +77,49 @@ func Update(){
 	}
 	if(ebiten.IsKeyPressed(ebiten.KeyW)){
 		y-=1.5
+		itens[0].Y -= 1.5
+		itens[1].Y -= 1.5
 	}
 	if mapRenderer.Overlaps(int16(colx), int16(y)) {
 		y += 1.5
+		itens[0].Y += 1.5
+		itens[1].Y += 1.5
 	}
     if(ebiten.IsKeyPressed(ebiten.KeyS)){
 		y+=1.5
+		itens[0].Y += 1.5
+		itens[1].Y += 1.5
 	}
 	if mapRenderer.Overlaps(int16(colx), int16(y)) {
 		y -= 1.5
+		itens[0].Y -= 1.5
+		itens[1].Y -= 1.5
 	}
     if(ebiten.IsKeyPressed(ebiten.KeyA)){
 		x-=1.5
 		colx-=1.5
 		flip = false
+		itens[0].X -= 1.5
+		itens[1].X -= 1.5
 	}
 	if mapRenderer.Overlaps(int16(colx), int16(y)) {
 		x += 1.5
 		colx+=1.5
+		itens[0].X += 1.5
+		itens[1].X += 1.5
 	}
 	if(ebiten.IsKeyPressed(ebiten.KeyD)){
 		x+=1.5
 		colx+=1.5
 		flip = true
+		itens[0].X += 1.5
+		itens[1].X += 1.5
 	}
 	if mapRenderer.Overlaps(int16(colx), int16(y)) {
 		x -= 1.5
 		colx -= 1.5
+		itens[0].X -= 1.5
+		itens[1].X -= 1.5
 	}
     mapRenderer.CamX = min(max(0, int16(x - 160)), mapRenderer.Width*16-20*16)
     mapRenderer.CamY = min(max(0, int16(y - 90)), mapRenderer.Height*16-11*16)

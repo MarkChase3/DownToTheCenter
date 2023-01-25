@@ -11,7 +11,7 @@ var spr []*ebiten.Image
 var currentSprite uint8 = 0
 var x, y float64
 var flip bool
-
+var itens[2] items.Item
 func max(y int16, x int16) int16 {
     if x > y {
 		return x
@@ -32,6 +32,8 @@ func loadSprite(tileset *ebiten.Image, clip image.Rectangle){
 }
 
 func init() {
+	items.LoadItems()
+	itens[0] = items.Item{items.Sword, 100, 100, false, false, "inital"}
 	flip = false
 	x, y = 100, 100
 	img, _, _ := image.Decode(bytes.NewReader(fs.LoadFile("images/player.png")))
@@ -55,7 +57,8 @@ func Draw(screen *ebiten.Image){
 }
 
 func Update(){
-    var colx float64
+    itens[0].Classification.Update(itens[0])
+	var colx float64
 	if flip {
 		colx = x
 	}  else {

@@ -1,9 +1,12 @@
 package player
 
 import "github.com/hajimehoshi/ebiten/v2"
-import "github.com/hajimehoshi/ebiten/v2/ebitenutil"
+// import "github.com/hajimehoshi/ebiten/v2/ebitenutil"
 import "image"
+import "bytes"
 import "DownToTheCenter/mapRenderer"
+import "DownToTheCenter/fs"
+import "DownToTheCenter/items"
 var spr []*ebiten.Image
 var currentSprite uint8 = 0
 var x, y float64
@@ -31,7 +34,8 @@ func loadSprite(tileset *ebiten.Image, clip image.Rectangle){
 func init() {
 	flip = false
 	x, y = 100, 100
-	tileset, _, _ := ebitenutil.NewImageFromFile("images/player.png")
+	img, _, _ := image.Decode(bytes.NewReader(fs.LoadFile("images/player.png")))
+	tileset := ebiten.NewImageFromImage(img)
 	loadSprite(tileset, image.Rectangle{image.Point{0, 0}, image.Point{16, 16}})
 	loadSprite(tileset, image.Rectangle{image.Point{16, 0}, image.Point{32, 16}})
 	loadSprite(tileset, image.Rectangle{image.Point{0, 16}, image.Point{16, 32}})

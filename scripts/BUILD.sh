@@ -1,7 +1,6 @@
 cd code
 go build
 GOOS=windows go build
-GOOS=darwin GOARCH=go build
 STR1=$(base64 -w 0 ../images/player.png)
 STR2=$(base64 -w 0 ../images/tileset1.png)
 STR3=$(base64 -w 0 ../maps/jsons/map1.json)

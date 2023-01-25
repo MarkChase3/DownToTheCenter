@@ -1,9 +1,8 @@
 package mapRenderer
 
-import "os"
 import "encoding/json"
 import "fmt"
-
+import "DownToTheCenter/fs"
 import "github.com/hajimehoshi/ebiten/v2"
 import "github.com/hajimehoshi/ebiten/v2/ebitenutil"
 import "image"
@@ -47,7 +46,9 @@ type TileLayer struct {
 }
 
 func init(){
-	jsonfile, _ := os.ReadFile("maps/jsons/map1.json")
+	var jsonfile []byte
+	jsonfile = fs.LoadFile("maps/jsons/map1.json")
+	fmt.Println(jsonfile)
 	var gamemap map[string]interface{}
 	json.Unmarshal([]byte(jsonfile), &gamemap)
     layers, _ := gamemap["layers"].([]interface{})

@@ -33,7 +33,7 @@ func loadSprite(tileset *ebiten.Image, clip image.Rectangle){
 
 func init() {
 	items.LoadItems()
-	itens[0] = items.Item{items.Sword, 100, 100, false, false, "inital"}
+	itens[0] = items.Item{items.Sword, 100, 100, false, false, "inital", 0}
 	flip = false
 	x, y = 100, 100
 	img, _, _ := image.Decode(bytes.NewReader(fs.LoadFile("images/player.png")))
@@ -45,6 +45,9 @@ func init() {
 }
 
 func Draw(screen *ebiten.Image){
+    itemop := &ebiten.DrawImageOptions{}
+	itemop.GeoM.Translate(float64(x) - float64(mapRenderer.CamX), float64(y) - float64(mapRenderer.CamY))
+	screen.DrawImage(itens[0].Classification.Spr[itens[0].CurrentSprite], itemop)
 	op := &ebiten.DrawImageOptions{}
     if !flip {
 	    op.GeoM.Scale(float64(1), float64(1))

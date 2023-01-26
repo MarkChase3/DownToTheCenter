@@ -8,6 +8,12 @@ type ItemType struct {
 	Spr []*ebiten.Image
     Update func (item *Item, flip bool)
 }
+type Projectil struct {
+    X float32
+    Y float32
+	SpdX float32
+	SpdY float32
+}
 type Item struct {
     Classification ItemType
 	X float32
@@ -17,6 +23,7 @@ type Item struct {
 	State []byte
     CurrentSprite uint8
 	Hand ebiten.MouseButton
+	Projectiles []Projectil
 }
 var Sword ItemType
 var Bow ItemType
@@ -46,6 +53,7 @@ func LoadItems(){
 	Bow = NewItem("images/bow.png", func (item *Item, flip bool) {
 		if ebiten.IsMouseButtonPressed(item.Hand) {
 			item.CurrentSprite = 2
+			item.Projectiles = append(item.Projectiles, Projectil{item.X, item.Y, 0.001, 0.0001})
 		} else {
 			item.CurrentSprite = 0
 		}

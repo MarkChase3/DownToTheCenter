@@ -3,6 +3,7 @@ package player
 import "github.com/hajimehoshi/ebiten/v2"
 import "image"
 import "bytes"
+import "fmt"
 import "DownToTheCenter/mapRenderer"
 import "DownToTheCenter/fs"
 import "DownToTheCenter/items"
@@ -32,8 +33,8 @@ func loadSprite(tileset *ebiten.Image, clip image.Rectangle){
 
 func init() {
 	items.LoadItems()
-	itens[0] = items.Item{items.Sword, 98, 103, false, false, []byte{}, 0, ebiten.MouseButtonLeft}
-	itens[1] = items.Item{items.Bow, 106, 103, false, false, []byte{}, 0, ebiten.MouseButtonLeft}
+	itens[0] = items.Item{items.Sword, 98, 103, false, false, []byte{}, 0, ebiten.MouseButtonLeft, []items.Projectil{}}
+	itens[1] = items.Item{items.Bow, 106, 103, false, false, []byte{}, 0, ebiten.MouseButtonRight, []items.Projectil{}}
 	flip = false
 	x, y = 100, 100
 	img, _, _ := image.Decode(bytes.NewReader(fs.LoadFile("images/player.png")))
@@ -64,11 +65,33 @@ func Draw(screen *ebiten.Image){
 	screen.DrawImage(spr[currentSprite], op)
 	screen.DrawImage(itens[0].Classification.Spr[itens[0].CurrentSprite], item1op)
 	screen.DrawImage(itens[1].Classification.Spr[itens[1].CurrentSprite], item2op)
+    for i := 0; i < len(itens[0].Projectiles); i++ {
+		println("!KJhdhnjvgbbbbnngj")
+		projecop := &ebiten.DrawImageOptions{}
+        projecop.GeoM.Translate(float64(itens[0].Projectiles[i].X) - float64(mapRenderer.CamX), float64(itens[0].Projectiles[i].X) - float64(mapRenderer.CamY))
+		screen.DrawImage(itens[0].Classification.Spr[itens[0].CurrentSprite], projecop)
+	}
+
+    for i := 0; i < len(itens[1].Projectiles); i++ {
+		fmt.Println(float64(itens[1].Projectiles[i].X) - float64(mapRenderer.CamX))
+		projecop := &ebiten.DrawImageOptions{}
+        projecop.GeoM.Translate(float64(itens[1].Projectiles[i].X) - float64(mapRenderer.CamX), float64(itens[1].Projectiles[i].X) - float64(mapRenderer.CamY))
+		screen.DrawImage(itens[1].Classification.Spr[itens[1].CurrentSprite], projecop)
+	}
+
 }
 
 func Update(){
     itens[0].Classification.Update(&itens[0], flip)
     itens[1].Classification.Update(&itens[1], flip)
+	for i := 0; i < len(itens[0].Projectiles); i++ {
+		itens[0].Projectiles[i].X += itens[0].Projectiles[i].SpdX
+		itens[0].Projectiles[i].Y += itens[0].Projectiles[i].SpdY
+	}
+	for i := 0; i < len(itens[1].Projectiles); i++ {
+	    itens[1].Projectiles[i].X += itens[1].Projectiles[i].SpdX
+	    itens[1].Projectiles[i].Y += itens[1].Projectiles[i].SpdY
+	}
 	var colx float64
 	if flip {
 		colx = x

@@ -5,6 +5,7 @@ import "github.com/hajimehoshi/ebiten/v2"
 import "image/color"
 import "DownToTheCenter/player"
 import "DownToTheCenter/mapRenderer"
+import "DownToTheCenter/enemies"
 
 type Game struct{}
 

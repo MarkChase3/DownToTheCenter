@@ -3,7 +3,7 @@ package player
 import "github.com/hajimehoshi/ebiten/v2"
 import "image"
 import "bytes"
-import "fmt"
+//import "fmt"
 import "DownToTheCenter/mapRenderer"
 import "DownToTheCenter/fs"
 import "DownToTheCenter/items"
@@ -34,7 +34,7 @@ func loadSprite(tileset *ebiten.Image, clip image.Rectangle){
 func init() {
 	items.LoadItems()
 	itens[0] = items.Item{items.Sword, 98, 103, false, false, []byte{}, 0, ebiten.MouseButtonLeft, []items.Projectil{}}
-	itens[1] = items.Item{items.Bow, 106, 103, false, false, []byte{}, 0, ebiten.MouseButtonRight, []items.Projectil{}}
+	itens[1] = items.Item{items.FireBall, 105, 103, false, false, []byte{}, 0, ebiten.MouseButtonRight, []items.Projectil{}}
 	flip = false
 	x, y = 100, 100
 	img, _, _ := image.Decode(bytes.NewReader(fs.LoadFile("images/player.png")))
@@ -73,9 +73,9 @@ func Draw(screen *ebiten.Image){
 	}
 
     for i := 0; i < len(itens[1].Projectiles); i++ {
-		fmt.Println(float64(itens[1].Projectiles[i].X) - float64(mapRenderer.CamX))
+		//fmt.Println(float64(itens[1].Projectiles[i].X) - float64(mapRenderer.CamX))
 		projecop := &ebiten.DrawImageOptions{}
-        projecop.GeoM.Translate(float64(itens[1].Projectiles[i].X) - float64(mapRenderer.CamX), float64(itens[1].Projectiles[i].X) - float64(mapRenderer.CamY))
+        projecop.GeoM.Translate(float64(itens[1].Projectiles[i].X) - float64(mapRenderer.CamX), float64(itens[1].Projectiles[i].Y) - float64(mapRenderer.CamY))
 		screen.DrawImage(itens[1].Classification.Spr[itens[1].CurrentSprite], projecop)
 	}
 
@@ -84,9 +84,28 @@ func Draw(screen *ebiten.Image){
 func Update(){
     itens[0].Classification.Update(&itens[0], flip)
     itens[1].Classification.Update(&itens[1], flip)
-	for i := 0; i < len(itens[0].Projectiles); i++ {
-		itens[0].Projectiles[i].X += itens[0].Projectiles[i].SpdX
-		itens[0].Projectiles[i].Y += itens[0].Projectiles[i].SpdY
+	for j := 0; j < 2; j++ {
+	    for i := 0; i < len(itens[j].Projectiles); i++ {
+    		itens[j].Projectiles[i].X += itens[j].Projectiles[i].SpdX
+		    if mapRenderer.Overlaps(int16(itens[j].Projectiles[i].X), int16(itens[j].Projectiles[i].Y)) {
+			    if itens[j].Projectiles[i].Life <= 0 || !itens[j].Projectiles[i].IsBouncer {
+				    itens[j].Projectiles = append(itens[j].Projectiles[:i], itens[j].Projectiles[i+1:]...)
+					continue
+			    } else {
+					itens[j].Projectiles[i].Life--
+					itens[j].Projectiles[i].SpdX = -itens[j].Projectiles[i].SpdX
+				}
+		    }
+			itens[j].Projectiles[i].Y += itens[j].Projectiles[i].SpdY
+		    if mapRenderer.Overlaps(int16(itens[j].Projectiles[i].X), int16(itens[j].Projectiles[i].Y)) {
+			    if itens[j].Projectiles[i].Life <= 0 || !itens[j].Projectiles[i].IsBouncer {
+				    itens[j].Projectiles = append(itens[j].Projectiles[:i], itens[j].Projectiles[i+1:]...)
+			    } else {
+					itens[j].Projectiles[i].Life--
+					itens[j].Projectiles[i].SpdY = -itens[j].Projectiles[i].SpdY
+				}
+		    }
+        }
 	}
 	for i := 0; i < len(itens[1].Projectiles); i++ {
 	    itens[1].Projectiles[i].X += itens[1].Projectiles[i].SpdX

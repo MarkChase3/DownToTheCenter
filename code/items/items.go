@@ -1,9 +1,13 @@
 package items
 
 import "image"
+import "fmt"
 import "bytes"
+import "math"
 import "DownToTheCenter/fs"
+import "DownToTheCenter/mapRenderer"
 import "github.com/hajimehoshi/ebiten/v2"
+import "github.com/hajimehoshi/ebiten/v2/inpututil"
 type ItemType struct {
 	Spr []*ebiten.Image
     Update func (item *Item, flip bool)
@@ -13,6 +17,9 @@ type Projectil struct {
     Y float32
 	SpdX float32
 	SpdY float32
+	IsBouncer bool
+	Life uint16
+	//SprIndex uint8
 }
 type Item struct {
     Classification ItemType
@@ -24,9 +31,11 @@ type Item struct {
     CurrentSprite uint8
 	Hand ebiten.MouseButton
 	Projectiles []Projectil
+
 }
 var Sword ItemType
 var Bow ItemType
+var FireBall ItemType
 
 func NewItem(path string, updt func (item *Item, flip bool)) ItemType {
 	c, _, _ := image.DecodeConfig(bytes.NewReader(fs.LoadFile(path)))
@@ -44,16 +53,28 @@ func NewItem(path string, updt func (item *Item, flip bool)) ItemType {
 }
 func LoadItems(){
     Sword = NewItem("images/sword.png", func (item *Item, flip bool) {
-		if ebiten.IsMouseButtonPressed(item.Hand) {
+		if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
 			item.CurrentSprite = 2
 		} else {
 			item.CurrentSprite = 0
 		}
 	})
 	Bow = NewItem("images/bow.png", func (item *Item, flip bool) {
-		if ebiten.IsMouseButtonPressed(item.Hand) {
+		if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 			item.CurrentSprite = 2
-			item.Projectiles = append(item.Projectiles, Projectil{item.X, item.Y, 0.001, 0.0001})
+			posx, posy := ebiten.CursorPosition()
+			fmt.Println(posx, posy)
+			item.Projectiles = append(item.Projectiles, Projectil{item.X, item.Y, float32(math.Cos(math.Atan2(float64(posy + int(mapRenderer.CamY)- int(item.Y)), float64(posx + int(mapRenderer.CamX) - int(item.X))))) * 3,float32(math.Sin(math.Atan2(float64(posy + int(mapRenderer.CamY) - int(item.Y)), float64(posx + int(mapRenderer.CamX) - int(item.X))))) * 3, false, 4})
+		} else {
+			item.CurrentSprite = 0
+		}
+	})
+	FireBall = NewItem("images/fireball.png", func (item *Item, flip bool) {
+		if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+			item.CurrentSprite = 2
+			posx, posy := ebiten.CursorPosition()
+			fmt.Println(posx, posy)
+			item.Projectiles = append(item.Projectiles, Projectil{item.X, item.Y, float32(math.Cos(math.Atan2(float64(posy + int(mapRenderer.CamY)- int(item.Y)), float64(posx + int(mapRenderer.CamX) - int(item.X))))) * 3,float32(math.Sin(math.Atan2(float64(posy + int(mapRenderer.CamY) - int(item.Y)), float64(posx + int(mapRenderer.CamX) - int(item.X))))) * 3, true, 4})
 		} else {
 			item.CurrentSprite = 0
 		}

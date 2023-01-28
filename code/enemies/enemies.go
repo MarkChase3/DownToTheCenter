@@ -10,9 +10,9 @@ import (
 	"image"
 	"math/rand"
 
-	"github.com/hajimehoshi/ebiten/v2"
-
 	paths "github.com/MarkChase3/original-paths-but-importable"
+	"github.com/reiver/go-cast"
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 type EnemyType struct {
@@ -89,7 +89,17 @@ func Start() {
 }
 func Update() {
 	str := mapRenderer.Filteredlayers[1][int(player.X/8-5)+int(player.Y/8-5)*int(mapRenderer.Width) : int(player.X/8+5)+int(player.Y/8+5)*int(mapRenderer.Width)]
-	grid := paths.NewGridFromStringArrays()
+	var lines [][]int8
+	for {
+		if len(str) == 0 {
+			break
+		}
+
+		lines = append(lines, str[0:10])
+		str = str[10:]
+	}
+	grid := paths.NewGridFromStringArrays(casts.string(lines), 16, 16)
+	grid.CellsByRune(1)
 }
 
 func Draw(screen *ebiten.Image) {

@@ -2,6 +2,7 @@ package main
 
 import (
 	"DownToTheCenter/enemies"
+	"DownToTheCenter/input"
 	"DownToTheCenter/mapRenderer"
 	"DownToTheCenter/player"
 	"image/color"
@@ -16,6 +17,7 @@ type Game struct{}
 func (g *Game) Update() error {
 	player.Update()
 	enemies.Update()
+	input.UpdateInput()
 	return nil
 }
 
@@ -24,6 +26,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	mapRenderer.Draw(screen)
 	enemies.Draw(screen)
 	player.Draw(screen)
+	input.Draw(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {

@@ -2,10 +2,10 @@ package player
 
 import (
 	"DownToTheCenter/fs"
+	"DownToTheCenter/input"
 	"DownToTheCenter/items"
 	"DownToTheCenter/mapRenderer"
 	"bytes"
-	"fmt"
 	"image"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -74,7 +74,6 @@ func Draw(screen *ebiten.Image) {
 	for j := 0; j < 2; j++ {
 		for i := 0; i < len(itens[j].Projectiles); i++ {
 			projecop := &ebiten.DrawImageOptions{}
-			fmt.Println(itens[j].Projectiles[i].X, itens[j].Projectiles[i].Y)
 			projecop.GeoM.Translate(float64(itens[j].Projectiles[i].X)-float64(mapRenderer.CamX), float64(itens[j].Projectiles[i].Y)-float64(mapRenderer.CamY))
 			screen.DrawImage(itens[j].Classification.Spr[itens[j].CurrentSprite], projecop)
 		}
@@ -94,56 +93,25 @@ func Update() {
 		}
 	}
 	var colX float64
-	if flip {
-		colX = X
-	} else {
-		colX = X
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyW) {
-		Y -= 1.5
-		itens[0].Y -= 1.5
-		itens[1].Y -= 1.5
+	colX = X
+	if input.IsMoving {
+		Y += input.Y * 1.5
 	}
 	if mapRenderer.Overlaps(int16(colX), int16(Y)) {
-		Y += 1.5
-		itens[0].Y += 1.5
-		itens[1].Y += 1.5
+		Y -= input.Y * 3
 	}
-	if ebiten.IsKeyPressed(ebiten.KeyS) {
-		Y += 1.5
-		itens[0].Y += 1.5
-		itens[1].Y += 1.5
-	}
-	if mapRenderer.Overlaps(int16(colX), int16(Y)) {
-		Y -= 1.5
-		itens[0].Y -= 1.5
-		itens[1].Y -= 1.5
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyA) {
-		X -= 1.5
-		colX -= 1.5
-		flip = false
-		itens[0].X -= 1.5
-		itens[1].X -= 1.5
+	if input.IsMoving {
+		X += input.X * 1.5
+		colX += input.X * 1.5
+		///flip = false
+		//itens[0].X +=
+		//itens[1].X +=
 	}
 	if mapRenderer.Overlaps(int16(colX), int16(Y)) {
-		X += 1.5
-		colX += 1.5
-		itens[0].X += 1.5
-		itens[1].X += 1.5
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyD) {
-		X += 1.5
-		colX += 1.5
-		flip = true
-		itens[0].X += 1.5
-		itens[1].X += 1.5
-	}
-	if mapRenderer.Overlaps(int16(colX), int16(Y)) {
-		X -= 1.5
-		colX -= 1.5
-		itens[0].X -= 1.5
-		itens[1].X -= 1.5
+		X -= input.X * 3
+		colX -= input.X * 3
+		//itens[0].X -= float32(math.Cos(input.Angle)) * 1.5
+		//itens[1].X -= float32(math.Cos(input.Angle)) * 1.5
 	}
 	mapRenderer.CamX = min(maX(0, int16(X-160)), mapRenderer.Width*16-20*16)
 	mapRenderer.CamY = min(maX(0, int16(Y-90)), mapRenderer.Height*16-11*16)

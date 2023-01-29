@@ -2,9 +2,9 @@ package items
 
 import (
 	"DownToTheCenter/fs"
+	"DownToTheCenter/input"
 	"DownToTheCenter/mapRenderer"
 	"bytes"
-	"fmt"
 	"image"
 	"math"
 	"math/rand"
@@ -69,7 +69,6 @@ func LoadItems() {
 		if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 			item.CurrentSprite = 2
 			posx, posy := ebiten.CursorPosition()
-			fmt.Println(posx, posy)
 			item.Projectiles = append(item.Projectiles, Projectil{item.X, item.Y, float32(math.Cos(math.Atan2(float64(posy+int(mapRenderer.CamY)-int(item.Y)), float64(posx+int(mapRenderer.CamX)-int(item.X))))) * 3, float32(math.Sin(math.Atan2(float64(posy+int(mapRenderer.CamY)-int(item.Y)), float64(posx+int(mapRenderer.CamX)-int(item.X))))) * 3, false, 4})
 		} else {
 			item.CurrentSprite = 0
@@ -78,9 +77,10 @@ func LoadItems() {
 		*projectiles = append((*projectiles)[:i], (*projectiles)[i+1:]...)
 	})
 	FireBall = NewItem("images/fireball.png", func(item *Item, flip bool) {
-		if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+		if input.IsTargeting() {
 			item.CurrentSprite = 2
-			posx, posy := ebiten.CursorPosition()
+			print(input.TargetPos())
+			posx, posy := input.TargetPos()
 			item.Projectiles = append(item.Projectiles, Projectil{item.X, item.Y, float32(math.Cos(math.Atan2(float64(posy+int(mapRenderer.CamY)-int(item.Y)), float64(posx+int(mapRenderer.CamX)-int(item.X))))) * 3, float32(math.Sin(math.Atan2(float64(posy+int(mapRenderer.CamY)-int(item.Y)), float64(posx+int(mapRenderer.CamX)-int(item.X))))) * 3, true, 4})
 		} else {
 			item.CurrentSprite = 0

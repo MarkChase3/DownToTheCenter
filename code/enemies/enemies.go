@@ -4,14 +4,11 @@ import (
 	"DownToTheCenter/fs"
 	"DownToTheCenter/items"
 	"DownToTheCenter/mapRenderer"
-	"DownToTheCenter/player"
 	"bytes"
-	"fmt"
 	"image"
 	"math/rand"
 
 	paths "github.com/MarkChase3/original-paths-but-importable"
-	"github.com/reiver/go-cast"
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
@@ -59,7 +56,7 @@ func Start() {
 	Enemies = append(Enemies, Enemy{})
 	Enemies[0] = Enemy{
 		zombie,
-		0, 0,
+		300, 300,
 		false,
 		[2]items.Item{
 			items.Item{
@@ -88,17 +85,19 @@ func Start() {
 	}*/
 }
 func Update() {
-	str := mapRenderer.Filteredlayers[1][int(player.X/8-5)+int(player.Y/8-5)*int(mapRenderer.Width) : int(player.X/8+5)+int(player.Y/8+5)*int(mapRenderer.Width)]
-	var lines [][]int8
-	for {
-		if len(str) == 0 {
-			break
-		}
-
-		lines = append(lines, str[0:10])
-		str = str[10:]
+	var str [][]int8
+	var reallines []string
+	for i := 0; i < 10; i++ {
+		str = append(str, mapRenderer.Filteredlayers[1][(i+int(Enemies[0].Y/16))*int(mapRenderer.Width)-5:(i+int(Enemies[0].Y/16))*int(mapRenderer.Width)+5])
 	}
-	grid := paths.NewGridFromStringArrays(casts.string(lines), 16, 16)
+	for i := 0; i < 10; i++ {
+		var bits8 []byte
+		for j := 0; j < 10; j++ {
+			bits8 = append(bits8, byte(str[i][j]))
+		}
+		reallines = append(reallines, string(bits8))
+	}
+	grid := paths.NewGridFromStringArrays(reallines, 16, 16)
 	grid.CellsByRune(1)
 }
 
@@ -119,8 +118,6 @@ func Draw(screen *ebiten.Image) {
 		item1op.GeoM.Translate(float64(Enemies[0].itens[0].X)-float64(mapRenderer.CamX)+float64(20), float64(Enemies[0].itens[0].Y)-float64(mapRenderer.CamY))
 		item2op.GeoM.Translate(float64(Enemies[0].itens[1].X)-float64(mapRenderer.CamX)+float64(5), float64(Enemies[0].itens[1].Y)-float64(mapRenderer.CamY))
 	}
-	fmt.Println(Enemies[0].classification.spr[Enemies[0].currentSprite])
-	println(Enemies[0].classification.spr[Enemies[0].currentSprite])
 	screen.DrawImage(Enemies[0].classification.spr[Enemies[0].currentSprite], op)
 	screen.DrawImage(Enemies[0].itens[0].Classification.Spr[Enemies[0].itens[0].CurrentSprite], item1op)
 	screen.DrawImage(Enemies[0].itens[1].Classification.Spr[Enemies[0].itens[1].CurrentSprite], item2op)

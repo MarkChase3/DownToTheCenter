@@ -3,7 +3,6 @@ package mapRenderer
 import (
 	"DownToTheCenter/fs"
 	"encoding/json"
-	"fmt"
 	"image"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -53,7 +52,6 @@ type TileLayer struct {
 func init() {
 	var jsonfile []byte
 	jsonfile = fs.LoadFile("maps/jsons/map1.json")
-	fmt.Println(jsonfile)
 	var gamemap map[string]interface{}
 	json.Unmarshal([]byte(jsonfile), &gamemap)
 	layers, _ := gamemap["layers"].([]interface{})
@@ -71,7 +69,6 @@ func init() {
 	json.Unmarshal([]byte(walllayerjson), &realwalllayer)
 	Width = int16(realwalllayer.GridCellsX)
 	Height = int16(realwalllayer.GridCellsY)
-	fmt.Println(Width, Height)
 	Filteredlayers = append(Filteredlayers, realentitylayer.Entities)
 	Filteredlayers = append(Filteredlayers, realfloorlayer.Tiles)
 	Filteredlayers = append(Filteredlayers, realwalllayer.Tiles)
@@ -82,7 +79,6 @@ func init() {
 	Filteredlayers[0] = append(Filteredlayers[0], last...)
 	Filteredlayers[1] = append(Filteredlayers[1], last...)
 	Filteredlayers[2] = append(Filteredlayers[2], last...)
-	fmt.Println(Filteredlayers)
 	tileset, _, _ := ebitenutil.NewImageFromFile("images/tileset1.png")
 	loadSprite(tileset, image.Rectangle{image.Point{48, 48}, image.Point{64, 64}})
 	loadSprite(tileset, image.Rectangle{image.Point{0, 0}, image.Point{16, 16}})
@@ -126,7 +122,6 @@ func Overlaps(x int16, y int16) bool {
 			if Filteredlayers[1][int(j*Width)+int(i)] != -1 &&
 				((int16(i))*16)+16 > x && x+16 > ((int16(i))*16) &&
 				((int16(j))*16)+16 > y && y+16 > ((int16(j))*16) {
-				fmt.Println(j, i)
 				return true
 			}
 		}

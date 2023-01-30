@@ -8,6 +8,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
+var Inside bool
 var Angle float64
 var IsMoving bool
 var X float64
@@ -20,6 +21,8 @@ func IsTargeting() bool {
 func TargetPos() (int, int) {
 	return ebiten.CursorPosition()
 }
+
+var ShootPos = TargetPos
 
 func UpdateInput() {
 	X, Y = 0, 0

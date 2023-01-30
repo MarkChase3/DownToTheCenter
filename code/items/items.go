@@ -77,10 +77,10 @@ func LoadItems() {
 		*projectiles = append((*projectiles)[:i], (*projectiles)[i+1:]...)
 	})
 	FireBall = NewItem("images/fireball.png", func(item *Item, flip bool) {
-		if input.IsTargeting() {
+		if input.IsTargeting() && !input.Inside {
 			item.CurrentSprite = 2
 			print(input.TargetPos())
-			posx, posy := input.TargetPos()
+			posx, posy := input.ShootPos()
 			item.Projectiles = append(item.Projectiles, Projectil{item.X, item.Y, float32(math.Cos(math.Atan2(float64(posy+int(mapRenderer.CamY)-int(item.Y)), float64(posx+int(mapRenderer.CamX)-int(item.X))))) * 3, float32(math.Sin(math.Atan2(float64(posy+int(mapRenderer.CamY)-int(item.Y)), float64(posx+int(mapRenderer.CamX)-int(item.X))))) * 3, true, 4})
 		} else {
 			item.CurrentSprite = 0

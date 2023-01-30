@@ -96,22 +96,26 @@ func Update() {
 	colX = X
 	if input.IsMoving {
 		Y += input.Y * 1.5
+		itens[0].Y += float32(input.Y * 1.5)
+		itens[1].Y += float32(input.Y * 1.5)
 	}
 	if mapRenderer.Overlaps(int16(colX), int16(Y)) {
-		Y -= input.Y * 3
+		Y -= input.Y * 1.5
+		itens[0].Y -= float32(input.Y * 1.5)
+		itens[1].Y -= float32(input.Y * 1.5)
 	}
 	if input.IsMoving {
 		X += input.X * 1.5
 		colX += input.X * 1.5
 		///flip = false
-		//itens[0].X +=
-		//itens[1].X +=
+		itens[0].X += float32(input.X * 1.5)
+		itens[1].X += float32(input.X * 1.5)
 	}
 	if mapRenderer.Overlaps(int16(colX), int16(Y)) {
 		X -= input.X * 3
 		colX -= input.X * 3
-		//itens[0].X -= float32(math.Cos(input.Angle)) * 1.5
-		//itens[1].X -= float32(math.Cos(input.Angle)) * 1.5
+		itens[0].X -= float32(input.X * 3)
+		itens[1].X -= float32(input.X * 3)
 	}
 	mapRenderer.CamX = min(maX(0, int16(X-160)), mapRenderer.Width*16-20*16)
 	mapRenderer.CamY = min(maX(0, int16(Y-90)), mapRenderer.Height*16-11*16)

@@ -1,6 +1,4 @@
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/MarkChase3/original-paths-but-importable v0.0.0-20230126190610-1f8f4c298bd3 h1:kng9RTJNzZ3ChkvPqOemc8j9l9pXGUTlzJhJPYrBcoA=
-github.com/MarkChase3/original-paths-but-importable v0.0.0-20230126190610-1f8f4c298bd3/go.mod h1:4aQGo0hGFJ3cPQnlzjyX6tHl1HrJY2A44eoKV2/RFf0=
 github.com/ebitengine/purego v0.0.0-20220905075623-aeed57cda744 h1:A8UnJ/5OKzki4HBDwoRQz7I6sxKsokpMXcGh+fUxpfc=
 github.com/ebitengine/purego v0.0.0-20220905075623-aeed57cda744/go.mod h1:Eh8I3yvknDYZeCuXH9kRNaPuHEwvXDCk378o9xszmHg=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20220806181222-55e207c401ad h1:kX51IjbsJPCvzV9jUoVQG9GEUqIq5hjfYzXTqQ52Rh8=
@@ -19,10 +17,9 @@ github.com/jezek/xgb v1.0.1/go.mod h1:nrhwO0FX/enq75I7Y7G8iN1ubpSGZEiA3v9e9GyRFl
 github.com/jfreymuth/oggvorbis v1.0.4/go.mod h1:1U4pqWmghcoVsCJJ4fRBKv9peUJMBHixthRlBeD6uII=
 github.com/jfreymuth/vorbis v1.0.2/go.mod h1:DoftRo4AznKnShRl1GxiTFCseHr4zR9BN3TWXyuzrqQ=
 github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8/go.mod h1:HKlIX3XHQyzLZPlr7++PzdhaXEj94dEiJgZDTsxEqUI=
-github.com/reiver/go-cast v0.0.0-20220716221226-5360a56d42f4 h1:7I6dRunKVXFjlO2OnYUcIaF4831y847o4xAdphrJ9ng=
-github.com/reiver/go-cast v0.0.0-20220716221226-5360a56d42f4/go.mod h1:iU2DntJWteNmgCu96FnUH5qLMfmOCRhzoCDfmhyjSCM=
-github.com/reiver/go-fck v0.0.1 h1:GhOiIp/4Au3iPUVC1YRfJJS5CdvLDNF9qt/n1lwgWnM=
-github.com/reiver/go-fck v0.0.1/go.mod h1:i77J0nD9GkSF0osPcURZbv9u19F0keF/mrhkgIu9wvM=
+github.com/solarlune/paths v0.0.0-20230130082802-0494358a2ca6 h1:3MWUGu7ZFlZW8hza0dNfdLrNVTGVmggHRnIVg+G0UGE=
+github.com/solarlune/paths v0.0.0-20230130082802-0494358a2ca6/go.mod h1:C5Tmb7Ct4izNi5tAKM0aj5IoUOv1FnCmN8lk/ksa0Hk=
+github.com/veandco/go-sdl2 v0.4.1/go.mod h1:FB+kTpX9YTE+urhYiClnRzpOXbiWgaU3+5F2AB78DPg=
 github.com/yuin/goldmark v1.4.0/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=

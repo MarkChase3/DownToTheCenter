@@ -42,6 +42,7 @@ func UpdateInput() {
 	fmt.Println(Shooting)
 	if math.Sqrt(float64((x-jx)*(x-jx)+(y-jy)*(y-jy))) < 100 {
 		Inside = true
+		IsMoving = true
 		X = math.Cos(math.Atan2(float64(y-jy), float64(x-jx)))
 		Y = math.Sin(math.Atan2(float64(y-jy), float64(x-jx)))
 		fmt.Println(math.Atan2(float64(y-jy), float64(x-jx)))

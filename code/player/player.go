@@ -114,8 +114,8 @@ func Update() {
 	if mapRenderer.Overlaps(int16(colX), int16(Y)) {
 		X -= input.X * 3
 		colX -= input.X * 3
-		itens[0].X -= float32(input.X * 3)
-		itens[1].X -= float32(input.X * 3)
+		itens[0].X -= float32(input.X * 1.5)
+		itens[1].X -= float32(input.X * 1.5)
 	}
 	mapRenderer.CamX = min(maX(0, int16(X-160)), mapRenderer.Width*16-20*16)
 	mapRenderer.CamY = min(maX(0, int16(Y-90)), mapRenderer.Height*16-11*16)

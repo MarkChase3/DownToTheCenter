@@ -39,3 +39,5 @@ func main() {
 	ebiten.SetWindowTitle("Down To The Center")
 	ebiten.RunGame(&Game{})
 }
+
+func Dummy() {}

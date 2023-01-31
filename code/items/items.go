@@ -77,7 +77,7 @@ func LoadItems() {
 		*projectiles = append((*projectiles)[:i], (*projectiles)[i+1:]...)
 	})
 	FireBall = NewItem("images/fireball.png", func(item *Item, flip bool) {
-		if input.IsTargeting() && !input.Inside {
+		if input.Shooting {
 			item.CurrentSprite = 2
 			print(input.TargetPos())
 			posx, posy := input.ShootPos()

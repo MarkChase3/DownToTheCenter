@@ -57,36 +57,34 @@ func init() {
 func Start() {
 	NEnemies = 1
 	Enemies = append(Enemies, Enemy{})
-	Enemies = append(Enemies, Enemy{})
-	Enemies[0] = Enemy{
-		zombie,
-		500, 300,
-		false,
-		[2]items.Item{
-			items.Item{
-				Classification: items.FireBall,
-				X:              98, Y: 103,
-				Active:        false,
-				Onthefloor:    false,
-				State:         []byte{},
-				CurrentSprite: 0,
-				Hand:          ebiten.MouseButtonLeft,
-				Projectiles:   []items.Projectil{}},
-			items.Item{
-				Classification: items.FireBall,
-				X:              98, Y: 103,
-				Active:        false,
-				Onthefloor:    false,
-				State:         []byte{},
-				CurrentSprite: 0,
-				Hand:          ebiten.MouseButtonLeft,
-				Projectiles:   []items.Projectil{}}},
-		0}
 
-	/*for i := 0; i < NEnemies; i++ {
-
-
-	}*/
+	for i := 0; i < int(NEnemies); i++ {
+		Enemies = append(Enemies, Enemy{})
+		Enemies[0] = Enemy{
+			zombie,
+			uint16(rand.Intn(64*8) * 2), uint16(rand.Intn(32*8) * 2),
+			false,
+			[2]items.Item{
+				items.Item{
+					Classification: items.FireBall,
+					X:              98, Y: 103,
+					Active:        false,
+					Onthefloor:    false,
+					State:         []byte{},
+					CurrentSprite: 0,
+					Hand:          ebiten.MouseButtonLeft,
+					Projectiles:   []items.Projectil{}},
+				items.Item{
+					Classification: items.FireBall,
+					X:              98, Y: 103,
+					Active:        false,
+					Onthefloor:    false,
+					State:         []byte{},
+					CurrentSprite: 0,
+					Hand:          ebiten.MouseButtonLeft,
+					Projectiles:   []items.Projectil{}}},
+			0}
+	}
 }
 func Update() {
 	//var str [][]int8
@@ -101,7 +99,11 @@ func Update() {
 	for i := int(math.Max(0, float64(mapRenderer.CamY/16)-10)); i < int(math.Min(float64(mapRenderer.CamY/16+20), float64(mapRenderer.Height))); i++ {
 		var bits8 []byte
 		for j := int(math.Max(0, float64(mapRenderer.CamX/16)-10)); j < int(math.Min(float64(mapRenderer.CamX/16+20), float64(mapRenderer.Width))); j++ {
-			bits8 = append(bits8, byte(mapRenderer.Filteredlayers[1][j+i*int(mapRenderer.Width)]+1))
+			if (j == int(Enemies[0].X/16-uint16(mapRenderer.CamX-160)/16) && i == int(Enemies[0].Y/16-uint16(mapRenderer.CamY-160)/16)) || (j == int(player.X/16-float64(mapRenderer.CamX-160)/16) && i == int(player.Y/16-float64(mapRenderer.CamY-160)/16)) {
+				bits8 = append(bits8, 0)
+			} else {
+				bits8 = append(bits8, byte(mapRenderer.Filteredlayers[1][j+i*int(mapRenderer.Width)]+1))
+			}
 			fmt.Print(mapRenderer.Filteredlayers[1][j+i*int(mapRenderer.Width)]+1, " ")
 		}
 		fmt.Println("")
@@ -113,27 +115,28 @@ func Update() {
 		grid.SetWalkable(v, false)
 	}
 	grid.SetWalkable(0, true)
-	enempath := grid.GetPath(float64((Enemies[0].X - uint16(mapRenderer.CamX-10))), float64((Enemies[0].Y - uint16(mapRenderer.CamY-10))), (player.X - float64(mapRenderer.CamX-10)), (player.Y - float64(mapRenderer.CamY) - 10), true, false)
+	enempath := grid.GetPath(float64((Enemies[0].X - uint16(math.Max(float64(mapRenderer.CamX-160), 0)))), float64((Enemies[0].Y - uint16(math.Max(float64(mapRenderer.CamY-160), 0)))), (player.X - (math.Max(float64(mapRenderer.CamX-160), 0))), (player.Y - (math.Max(float64(mapRenderer.CamY-160), 0))), false, false)
 	if enempath == nil {
 		return
 	}
 	fmt.Println(enempath)
-	fmt.Println(((Enemies[0].X - uint16(mapRenderer.CamX)) / 16), float64((Enemies[0].Y-uint16(mapRenderer.CamY))/16), int(player.X-float64(mapRenderer.CamX))/16, int(player.Y-float64(mapRenderer.CamY))/16)
 	next := enempath.Next()
 	fmt.Println(next)
 	if next == nil {
 		return
 	}
-	fmt.Println(Enemies[0].X)
-	if uint16(((int16(next.X)*16 + int16(mapRenderer.CamX-10)) - int16(Enemies[0].X))) > 0 {
-		Enemies[0].X++
-	} else {
-		Enemies[0].X--
+	if int16(((int16(next.X)*16 + int16(math.Max(float64(mapRenderer.CamX-160), 0))) - int16(Enemies[0].X))) > 0 {
+		Enemies[0].X += 1
 	}
-	if uint16(((int16(next.Y)*16 + int16(mapRenderer.CamY-10)) - int16(Enemies[0].Y))) > 0 {
-		Enemies[0].X++
-	} else {
-		Enemies[0].X--
+	if int16(((int16(next.X)*16 + int16(math.Max(float64(mapRenderer.CamX-160), 0))) - int16(Enemies[0].X))) < 0 {
+		Enemies[0].X -= 1
+	}
+	if int16(((int16(next.Y)*16 + int16(math.Max(float64(mapRenderer.CamY-160), 0))) - int16(Enemies[0].Y))) > 0 {
+		Enemies[0].Y += 1
+	}
+	fmt.Println(int16(((int16(next.Y)*16 + int16(math.Max(float64(mapRenderer.CamY-160), 0))) - int16(Enemies[0].Y))))
+	if int16(((int16(next.Y)*16 + int16(math.Max(float64(mapRenderer.CamY-160), 0))) - int16(Enemies[0].Y))) < 0 {
+		Enemies[0].Y -= 1
 	}
 	fmt.Println(uint16(((int16(next.X)*16 + int16(mapRenderer.CamX-10)) - int16(Enemies[0].X)) / 8))
 }
@@ -146,7 +149,7 @@ func Draw(screen *ebiten.Image) {
 		op.GeoM.Scale(float64(1), float64(1))
 		op.GeoM.Translate(float64(Enemies[0].X)-float64(mapRenderer.CamX), float64(Enemies[0].Y)-float64(mapRenderer.CamY))
 		item1op.GeoM.Translate(float64(Enemies[0].itens[0].X)-float64(mapRenderer.CamX), float64(Enemies[0].itens[0].Y)-float64(mapRenderer.CamY))
-		item2op.GeoM.Translate(float64(Enemies[0].itens[1].X)-float64(mapRenderer.CamX), float64(Enemies[0].itens[1].Y)-float64(mapRenderer.CamY))
+		item2op.GeoM.Translate(float64(Enemies[0].itens[1].X)-float64(mapRenderer.CamX), float64(Enemies[0].itens[1].Y)-float64(mapRenderer.CamY)-16)
 	} else {
 		op.GeoM.Scale(-1, 1)
 		item1op.GeoM.Scale(-1, 1)

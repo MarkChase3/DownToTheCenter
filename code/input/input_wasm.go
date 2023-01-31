@@ -13,6 +13,7 @@ var jy int = 130
 var X float64
 var Y float64
 var IsMoving bool = false
+var Shooting bool
 
 func IsTargeting() bool {
 	x, y := ebiten.TouchPosition(0)
@@ -38,6 +39,7 @@ func UpdateInput() {
 	x, y := TargetPos()
 	X, Y = 0, 0
 	Inside = false
+	fmt.Println(Shooting)
 	if math.Sqrt(float64((x-jx)*(x-jx)+(y-jy)*(y-jy))) < 100 {
 		Inside = true
 		X = math.Cos(math.Atan2(float64(y-jy), float64(x-jx)))
@@ -49,6 +51,7 @@ func UpdateInput() {
 		fmt.Println(X)
 		fmt.Println("\n")
 	}
+	Shooting = (len(ebiten.AppendTouchIDs([]ebiten.TouchID{})) == 1 && !Inside) || (len(ebiten.AppendTouchIDs([]ebiten.TouchID{})) == 2)
 }
 
 func Draw(screen *ebiten.Image) {
